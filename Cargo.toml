@@ -1,0 +1,16 @@
+[package]
+name = "rs-streams"
+version = "0.1.0"
+authors = ["Raja Lehtihet <raja.lehtihet@gmail.com>", "Wael El Oraiby <wael.eloraiby@gmail.com>"]
+edition = "2018"
+license = "BSD-3-Clause"
+description = "minimal stream library (no dependency on std)"
+repository = "https://github.com/NeoCogi/rs-streams"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rs-mem = "0.2.1"
+libc = "0.2.74"
+rs-collections = "0.1.2"
