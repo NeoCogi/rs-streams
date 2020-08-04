@@ -120,13 +120,16 @@ impl FileReader {
         Result::Ok(n as usize)
     }
 
-    pub fn read_to_string(&mut self) -> Result<String, ()> {
+    pub fn read_to_string(&mut self, buf: &mut String) -> Result<usize, ()> {
         let count   = self.size();
         let ptr     = unsafe { alloc_array(count) };
         let data    = unsafe { core::slice::from_raw_parts_mut(ptr, count) };
         let r = self.read(data);
         match r {
-            Ok(_) => Ok(String::from_raw_parts(ptr, count, count)),
+            Ok(_) => {
+                *buf = String::from_raw_parts(ptr, count, count);
+                Ok(count)
+            },
             Err(_) => Err(())
         }
     }
