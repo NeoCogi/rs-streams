@@ -56,8 +56,14 @@ impl Stream for FileWriter {
 }
 
 impl StreamSeek for FileWriter {
-    fn seek(&mut self, pos: usize) -> Result<usize, ()> {
-        unsafe { ::libc::fseek(self.file, pos as i64, ::libc::SEEK_SET) };
+    fn seek(&mut self, pos: SeekFrom) -> Result<usize, ()> {
+        unsafe {
+            match pos {
+                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as i64, ::libc::SEEK_SET),
+                SeekFrom::End(p)        => ::libc::fseek(self.file, p as i64, ::libc::SEEK_END),
+                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as i64, ::libc::SEEK_CUR)
+            }
+        };
         Result::Ok(self.tell())
     }
 }
@@ -128,8 +134,14 @@ impl Stream for FileReader {
 }
 
 impl StreamSeek for FileReader {
-    fn seek(&mut self, pos: usize) -> Result<usize, ()> {
-        unsafe { ::libc::fseek(self.file, pos as i64, ::libc::SEEK_SET) };
+    fn seek(&mut self, pos: SeekFrom) -> Result<usize, ()> {
+        unsafe {
+            match pos {
+                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as i64, ::libc::SEEK_SET),
+                SeekFrom::End(p)        => ::libc::fseek(self.file, p as i64, ::libc::SEEK_END),
+                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as i64, ::libc::SEEK_CUR)
+            }
+        };
         Result::Ok(self.tell())
     }
 }
@@ -148,14 +160,28 @@ impl StreamReader for FileReader {
     }
 }
 
+pub enum SeekFrom {
+    Start(u64),
+    End(i64),
+    Current(i64),
+}
+
 pub trait StreamSeek : Stream {
-    fn seek(&mut self, cursor: usize) -> Result<usize, ()>;
+    fn seek(&mut self, from: SeekFrom) -> Result<usize, ()>;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 pub struct File {}
 
 impl File {
+    pub fn open(fname: &str) -> Result<FileReader, ()> {
+        FileReader::open(fname)
+    }
+
+    pub fn create(fname: &str) -> Result<FileWriter, ()> {
+        FileWriter::create(fname)
+    }
+
     pub fn exist(fname: &str) -> bool {
         let f = FileReader::open(fname);
         match f {
