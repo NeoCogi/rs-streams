@@ -38,7 +38,7 @@ impl FileWriter {
             let curr = self.tell();
             ::libc::fseek(self.file, 0, ::libc::SEEK_END);
             let size = self.tell();
-            ::libc::fseek(self.file, curr as i64, ::libc::SEEK_SET);
+            ::libc::fseek(self.file, curr as c_long, ::libc::SEEK_SET);
             size
         }
     }
@@ -59,9 +59,9 @@ impl StreamSeek for FileWriter {
     fn seek(&mut self, pos: SeekFrom) -> Result<usize, ()> {
         unsafe {
             match pos {
-                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as i64, ::libc::SEEK_SET),
-                SeekFrom::End(p)        => ::libc::fseek(self.file, p as i64, ::libc::SEEK_END),
-                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as i64, ::libc::SEEK_CUR)
+                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_SET),
+                SeekFrom::End(p)        => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_END),
+                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_CUR)
             }
         };
         Result::Ok(self.tell())
@@ -97,7 +97,7 @@ impl FileReader {
             let curr = self.tell();
             ::libc::fseek(self.file, 0, ::libc::SEEK_END);
             let size = self.tell();
-            ::libc::fseek(self.file, curr as i64, ::libc::SEEK_SET);
+            ::libc::fseek(self.file, curr as c_long, ::libc::SEEK_SET);
             size
         }
     }
@@ -151,9 +151,9 @@ impl StreamSeek for FileReader {
     fn seek(&mut self, pos: SeekFrom) -> Result<usize, ()> {
         unsafe {
             match pos {
-                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as i64, ::libc::SEEK_SET),
-                SeekFrom::End(p)        => ::libc::fseek(self.file, p as i64, ::libc::SEEK_END),
-                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as i64, ::libc::SEEK_CUR)
+                SeekFrom::Start(p)      => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_SET),
+                SeekFrom::End(p)        => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_END),
+                SeekFrom::Current(p)    => ::libc::fseek(self.file, p as c_long, ::libc::SEEK_CUR)
             }
         };
         Result::Ok(self.tell())
