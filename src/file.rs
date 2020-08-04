@@ -346,8 +346,12 @@ mod tests {
             let s = "Hello File";
             match &mut f {
                 Ok(f) => {
-                    match f.read_to_string() {
-                        Ok(r) => assert_eq!(r.as_str(), s),
+                    let mut txt = String::new();
+                    match f.read_to_string(&mut txt) {
+                        Ok(r) => {
+                            assert_eq!(r, s.len());
+                            assert_eq!(txt.as_str(), s);
+                        },
                         _ => panic!("invalid string!")
                     }
                 },
