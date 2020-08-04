@@ -1,3 +1,4 @@
+#![no_std]
 pub mod memorystream;
 pub mod file;
 

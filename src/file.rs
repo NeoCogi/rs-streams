@@ -119,6 +119,17 @@ impl FileReader {
         let n = unsafe { ::libc::fgets(buff.as_mut_ptr() as *mut i8, buff.len() as c_int, self.file) };
         Result::Ok(n as usize)
     }
+
+    pub fn read_to_string(&mut self) -> Result<String, ()> {
+        let count   = self.size();
+        let ptr     = unsafe { alloc_array(count) };
+        let data    = unsafe { core::slice::from_raw_parts_mut(ptr, count) };
+        let r = self.read(data);
+        match r {
+            Ok(_) => Ok(String::from_raw_parts(ptr, count, count)),
+            Err(_) => Err(())
+        }
+    }
 }
 
 
@@ -322,6 +333,20 @@ mod tests {
                     let res = f.read(&mut buff);
                     assert!(res.unwrap() == s.as_bytes().len());
                     assert!(str::from_utf8(&buff).unwrap() == s);
+                },
+                _ => panic!("couldn't open file!")
+            }
+        }
+
+        {
+            let mut f = FileReader::open(name.as_str());
+            let s = "Hello File";
+            match &mut f {
+                Ok(f) => {
+                    match f.read_to_string() {
+                        Ok(r) => assert_eq!(r.as_str(), s),
+                        _ => panic!("invalid string!")
+                    }
                 },
                 _ => panic!("couldn't open file!")
             }
