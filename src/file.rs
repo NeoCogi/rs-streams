@@ -1,6 +1,5 @@
 use crate::*;
-use rs_mem::*;
-use rs_collections::*;
+use rs_alloc::*;
 use libc::*;
 
 pub struct FileWriter {
@@ -253,14 +252,14 @@ pub fn fprint_strings<'a>(f: *mut libc::FILE, arr: &[&'a str]) {
 macro_rules! fprint {
     () => {{}};
     ($stream:expr, $arg:expr) => { fprint!($stream, "{}", $arg) };
-    ($stream:expr, $($args:expr),+) => { unsafe { $crate::fprint_strings($stream, &[rs_collections::format!($($args),+).as_str()]) } };
+    ($stream:expr, $($args:expr),+) => { unsafe { $crate::fprint_strings($stream, &[rs_alloc::format!($($args),+).as_str()]) } };
 }
 
 #[macro_export]
 macro_rules! fprintln {
     () => {};
     ($stream:expr, $arg:expr) => { fprintln!($stream, "{}", $arg) };
-    ($stream:expr, $($args:expr),+) => { unsafe { $crate::fprint_strings($stream, &[rs_collections::format!($($args),+).as_str(), "\n"]) } };
+    ($stream:expr, $($args:expr),+) => { unsafe { $crate::fprint_strings($stream, &[rs_alloc::format!($($args),+).as_str(), "\n"]) } };
 }
 
 #[macro_export]

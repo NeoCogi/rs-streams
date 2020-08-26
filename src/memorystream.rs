@@ -1,5 +1,5 @@
 use crate::*;
-use rs_collections::*;
+use rs_alloc::*;
 
 pub struct MemoryStreamWriter {
     data    : Vec<u8>,
