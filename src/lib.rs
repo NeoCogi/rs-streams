@@ -2,7 +2,7 @@
 pub mod memorystream;
 pub mod file;
 
-
+pub use libc::*;
 pub use file::*;
 pub use memorystream::*;
 

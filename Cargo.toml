@@ -1,6 +1,6 @@
 [package]
 name = "rs-streams"
-version = "0.1.7"
+version = "0.1.8"
 authors = ["Raja Lehtihet <raja.lehtihet@gmail.com>", "Wael El Oraiby <wael.eloraiby@gmail.com>"]
 edition = "2018"
 license = "BSD-3-Clause"
@@ -11,6 +11,6 @@ readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libc = "0.2.76"
+libc = "0.2.94"
 rs-alloc = "0.0.1"
-cfg-if = "0.1.10"
+cfg-if = "1.0.0"
